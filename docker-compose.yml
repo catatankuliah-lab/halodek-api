@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3090:3090"
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    command: ["npm", "start"]

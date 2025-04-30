@@ -1,0 +1,15 @@
+# PORT
+PORT=3090
+
+# KEY
+SECRET_KEY=your_super_secret_key
+
+# DATABASE
+DB_HOST=82.29.160.250
+DB_PORT=3306
+DB_USER=ITS88Logistics
+DB_PASSWORD=ITS88Logistics
+DB_NAME=kasma
+
+# MODE
+NODE_ENV=development
