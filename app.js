@@ -16,8 +16,8 @@ import titikbongkarRoutes from "./routes/titikbongkarRoutes.js";
 import cicilanRoutes from "./routes/cicilanRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT || 3090;
-const upload = multer(); // Inisialisasi multer
+const PORT = process.env.PORT || 2018;
+const upload = multer();
 
 app.use(
     cors({
