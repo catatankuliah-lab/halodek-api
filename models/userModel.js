@@ -35,24 +35,26 @@ const User = {
   },
 
   addUser: async (
-    id_role,
-    username,
+    nama,
+    email,
     password,
-    status_user
+    no_hp,
+    role
   ) => {
     const result = await sequelize.query(
       `
-      INSERT INTO user (
-        id_role, username, password, status_user
-      ) VALUES (?, ?, ?, ?)
+    INSERT INTO users (
+      nama, email, password, no_hp, role
+    ) VALUES (?, ?, ?, ?, ?)
     `,
       {
         replacements: [
-          id_role,
-          username,
+          nama,
+          email,
           password,
-          status_user
-        ],
+          no_hp,
+          role
+        ]
       }
     );
     return result[0];

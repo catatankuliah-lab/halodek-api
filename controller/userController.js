@@ -47,20 +47,27 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { id_role, username, password, status_user } = req.body;
+  const { nama, email, password, no_hp, role } = req.body;
 
   try {
     const hashedPassword = bcrypt.hashSync(password, 10);
-
-    const id_user = await User.addUser(id_role, username, hashedPassword, status_user);
+    const id_user = await User.addUser(nama, email, hashedPassword, no_hp, role);
 
     res.status(201).json({
       status: "success",
-      data: { id_user, id_role, username, status_user },
+      data: {
+        id_user,
+        nama,
+        email,
+        no_hp,
+        role,
+        status: "aktif"
+      },
       message: "User created successfully.",
     });
   } catch (error) {
     console.error("Error creating user:", error);
+
     res.status(500).json({
       status: "error",
       data: null,
