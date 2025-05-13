@@ -3,8 +3,9 @@ import cors from "cors";
 import multer from "multer";
 import sequelize from "./config/config.js";
 import authRoutes from "./routes/authRoutes.js";
-import roleRoutes from "./routes/roleRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import konselorRoutes from "./routes/konselorRoutes.js";
+import paRoutes from "./routes/paRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 2018;
@@ -31,8 +32,9 @@ const init = async () => {
         console.log("Database & tables created!");
 
         app.use("/api/v1", authRoutes);
-        app.use("/api/v1", roleRoutes);
         app.use("/api/v1", userRoutes);
+        app.use("/api/v1", konselorRoutes);
+        app.use("/api/v1", paRoutes);
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);

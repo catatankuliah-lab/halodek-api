@@ -7,34 +7,32 @@ const router = express.Router();
 router.get(
   "/user",
   authMiddleware.authenticate,
-  authMiddleware.authorizeRole([1, 7]),
+  authMiddleware.authorizeRole(['kepala_unit']),
   userController.getAllUsers
 );
 
 router.get(
   "/user/:id_user",
   authMiddleware.authenticate,
-  authMiddleware.authorizeRole([1, 7]),
+  authMiddleware.authorizeRole(['kepala_unit']),
   userController.getUserById
 );
 
 router.post(
   "/user",
   authMiddleware.authenticate,
-  authMiddleware.authorizeRole([1, 7]),
+  authMiddleware.authorizeRole(['kepala_unit']),
   userController.createUser
 );
 
 router.put(
   "/user/:id_user",
   authMiddleware.authenticate,
-  authMiddleware.authorizeRole([1, 7]),
+  authMiddleware.authorizeRole(['kepala_unit']),
   userController.updateUser
 );
 
 router.get("/dev/user", userController.getAllUsers);
-router.get("/dev/user/:id_user", userController.getUserById);
 router.post("/dev/user", userController.createUser);
-router.put("/dev/user/:id_user", userController.updateUser);
 
 export default router;

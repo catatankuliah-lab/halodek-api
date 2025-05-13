@@ -61,24 +61,32 @@ const User = {
   },
 
   updateUser: async (id_user, userData) => {
-    const { id_role, username, password, status_user } = userData;
+    const {
+      nama,
+      email,
+      password,
+      no_hp,
+      role
+    } = userData;
     const [result] = await sequelize.query(
       `
-      UPDATE user
-      SET 
-        id_role = ?,
-        username = ?,
+      UPDATE users
+      SET
+        nama = ?,
+        email = ?,
         password = ?,
-        status_user = ?
+        no_hp = ?,
+        role = ?
       WHERE 
         id_user = ?
     `,
       {
         replacements: [
-          id_role,
-          username,
+          nama,
+          email,
           password,
-          status_user,
+          no_hp,
+          role,
           id_user
         ],
       }
