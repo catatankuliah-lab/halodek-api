@@ -1,42 +1,42 @@
 import express from "express";
-import * as konselorController from "../controller/konselorController.js";
+import * as mahasiswaController from "../controller/mahasiswaController.js";
 import * as authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.get(
-  "/konselor",
+  "/mahasiswa",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  konselorController.getKonselorFilter
-);
-
-router.post(
-  "/konselor",
-  authMiddleware.authenticate,
-  authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  konselorController.createKonselor
+  mahasiswaController.getMahasiswaFilter
 );
 
 router.get(
-  "/konselor/:id_konselor",
+  "/mahasiswa/iduser/:id_mahasiswa",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  konselorController.getKonselorByIdKonselor
+  mahasiswaController.getMahasiswaByIdMahasiswa
 );
 
 router.get(
-  "/konselor/iduser/:id_user",
+  "/mahasiswa/user/:id_user",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  konselorController.getKonselorByIdUser
+  mahasiswaController.getMahasiswaByIdUser
+);
+
+router.get(
+  "/mahasiswa/:id_mahasiswa",
+  authMiddleware.authenticate,
+  authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
+  mahasiswaController.getMahasiswaByIdMahasiswa
 );
 
 router.put(
-  "/konselor/:id_konselor",
+  "/mahasiswa/:id_mahasiswa",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  konselorController.updateKonselorByIdKonselor
+  mahasiswaController.updateMahasiswaByIdMahasiswa
 );
 
 export default router;

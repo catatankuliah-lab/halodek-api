@@ -18,14 +18,11 @@ const User = {
     const [results] = await sequelize.query(
       `
       SELECT 
-        user.*,
-        role.nama_role
+        users.*
       FROM 
-        user
-      LEFT JOIN 
-        role ON user.id_role = role.id_role
+        users
       WHERE 
-        user.id_user = ?
+        users.id_user = ?
       `,
       {
         replacements: [id_user],
@@ -61,38 +58,31 @@ const User = {
   },
 
   updateUser: async (id_user, userData) => {
-    const {
-      nama,
-      email,
-      password,
-      no_hp,
-      role
-    } = userData;
-    const [result] = await sequelize.query(
-      `
-      UPDATE users
-      SET
-        nama = ?,
-        email = ?,
-        password = ?,
-        no_hp = ?,
-        role = ?
-      WHERE 
-        id_user = ?
-    `,
-      {
-        replacements: [
-          nama,
-          email,
-          password,
-          no_hp,
-          role,
-          id_user
-        ],
-      }
-    );
+    if (!id_user || typeof userData !== 'object') return false;
+
+    const fields = [];
+    const values = [];
+
+    for (const [key, value] of Object.entries(userData)) {
+      fields.push(`${key} = ?`);
+      values.push(value);
+    }
+
+    if (fields.length === 0) return false;
+
+    const query = `
+    UPDATE users
+    SET ${fields.join(', ')}
+    WHERE id_user = ?
+  `;
+
+    values.push(id_user);
+
+    const [result] = await sequelize.query(query, { replacements: values });
+
     return result.affectedRows > 0;
   },
+
 };
 
 export default User;

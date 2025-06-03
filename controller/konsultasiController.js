@@ -1,16 +1,18 @@
-import Konselor from "../models/konselorModel.js";
+import Konsultasi from "../models/konsultasiModel.js";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 const upload = multer();
 
-export const getKonselorFilter = async (req, res) => {
-  const { page = 1, limit = 10, nama, no_hp, status } = req.query;
+export const getKonsultasiByIdUserFilter = async (req, res) => {
+  const { page = 1, limit = 10, topik, target, status } = req.query;
+  const { id_user } = req.params;
   try {
-    const { data, total } = await Konselor.getKonselorFilter(
+    const { data, total } = await Konsultasi.getKonsultasiByIdUserFilter(
+      parseInt(id_user),
       parseInt(page),
       parseInt(limit),
-      { nama, no_hp, status }
+      { topik, target, status }
     );
     res.json({
       data,
@@ -24,75 +26,68 @@ export const getKonselorFilter = async (req, res) => {
   }
 };
 
-export const createKonselor = async (req, res) => {
-  upload.single("foto_konselor")(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ error: err.message });
-    }
+export const getKonsultasiByIdUserFilterKonselor = async (req, res) => {
+  console.log("CEK");
+  const { page = 1, limit = 10, topik, target, status } = req.query;
+  const { id_user } = req.params;
+  try {
+    const { data, total } = await Konsultasi.getKonsultasiByIdUserFilterKonselor(
+      parseInt(id_user),
+      parseInt(page),
+      parseInt(limit),
+      { topik, target, status }
+    );
+    res.json({
+      data,
+      currentPage: parseInt(page),
+      limit: parseInt(limit),
+      totalData: total,
+      totalPages: Math.ceil(total / parseInt(limit)),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    const { id_user, status } = req.body;
-
-    if (!req.file) {
-      return res.status(400).json({ error: "File tidak ditemukan" });
-    }
-
-    try {
-      const uploadPath = "uploads/konselor/";
-      if (!fs.existsSync(uploadPath)) {
-        fs.mkdirSync(uploadPath, { recursive: true });
-      }
-
-      const newFileName = `konselor_${Date.now()}.jpg`;
-      const filePath = path.join(uploadPath, newFileName);
-
-      fs.writeFileSync(filePath, req.file.buffer);
-
-      const konslor = await Konselor.addKonselor(id_user, status, filePath);
-
-      res.status(201).json({
-        status: "success",
-        data: konslor,
-        message: "Konselor created successfully.",
-      });
-    } catch (error) {
-      console.error("Error creating Konselor:", error);
-      res.status(500).json({
-        status: "error",
-        message: "Internal Server Error",
-      });
-    }
-  });
+export const createKonsultasi = async (req, res) => {
+  const {
+    topik,
+    oleh_role,
+    oleh_id,
+    kepada_role,
+    kepada_id,
+    status
+  } = req.body;
+  try {
+    const hasil = await Konsultasi.createKonsultasi(
+      topik,
+      oleh_role,
+      oleh_id,
+      kepada_role,
+      kepada_id,
+      status
+    );
+    res.status(201).json({
+      status: "success",
+      data: {
+        hasil
+      },
+      message: "Konsultasi created successfully.",
+    });
+  } catch (error) {
+    console.error("Error creating Konsultasi:", error);
+    res.status(500).json({
+      status: "error",
+      data: null,
+      message: "Internal Server Error",
+    });
+  }
 };
 
 export const getKonselorByIdKonselor = async (req, res) => {
   const { id_konselor } = req.params;
   try {
     const konselor = await Konselor.getKonselorByIdKonselor(id_konselor);
-    if (konselor) {
-      res.status(200).json({
-        status: "success",
-        data: konselor,
-        message: "Konselor fetched successfully.",
-      });
-    } else {
-      res.status(404).json({
-        status: "error",
-        message: "Konselor not found.",
-      });
-    }
-  } catch (error) {
-    console.error("Error fetching Konselor by ID:", error);
-    res.status(500).json({
-      status: "error",
-      message: "Internal Server Error",
-    });
-  }
-};
-
-export const getKonselorByIdUser = async (req, res) => {
-  const { id_user } = req.params;
-  try {
-    const konselor = await Konselor.getKonselorByIdUser(id_user);
     if (konselor) {
       res.status(200).json({
         status: "success",

@@ -2,6 +2,26 @@ import PA from "../models/paModel.js";
 import multer from "multer";
 const upload = multer();
 
+export const getPAFilter = async (req, res) => {
+  const { page = 1, limit = 10, nama, no_hp, status } = req.query;
+  try {
+    const { data, total } = await PA.getPAFilter(
+      parseInt(page),
+      parseInt(limit),
+      { nama, no_hp, status }
+    );
+    res.json({
+      data,
+      currentPage: parseInt(page),
+      limit: parseInt(limit),
+      totalData: total,
+      totalPages: Math.ceil(total / parseInt(limit)),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const createPA = async (req, res) => {
   const { id_user, jumlah_mahasiswa_aktif, status } = req.body;
   try {

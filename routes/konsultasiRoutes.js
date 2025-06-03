@@ -1,38 +1,35 @@
 import express from "express";
-import * as userController from "../controller/userController.js";
+import * as konsultasiController from "../controller/konsultasiController.js";
 import * as authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+// router.get(
+//   "/konsultasi",
+//   authMiddleware.authenticate,
+//   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
+//   konsultasiController.getKonsultasiFilter
+// );
+
 router.get(
-  "/user",
+  "/konsultasi/:id_user",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  userController.getAllUsers
+  konsultasiController.getKonsultasiByIdUserFilter
 );
 
 router.get(
-  "/user/:id_user",
+  "/konsultasikonselor/:id_user",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  userController.getUserById
+  konsultasiController.getKonsultasiByIdUserFilterKonselor
 );
 
 router.post(
-  "/user",
+  "/konsultasi",
   authMiddleware.authenticate,
   authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  userController.createUser
+  konsultasiController.createKonsultasi
 );
-
-router.put(
-  "/user/:id_user",
-  authMiddleware.authenticate,
-  authMiddleware.authorizeRole(['kepala_unit', 'mahasiswa', 'konselor', 'pa', 'orangtua']),
-  userController.updateUser
-);
-
-router.get("/dev/user", userController.getAllUsers);
-router.post("/dev/user", userController.createUser);
 
 export default router;

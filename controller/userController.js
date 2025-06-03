@@ -71,23 +71,20 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { id_user } = req.params;
-  const userData = req.body;
+  const userData = { ...req.body };
 
   try {
-    userData.password = bcrypt.hashSync(userData.password, 10);
-    const updatedUser = await User.updateUser(id_user, userData);
-    if (updatedUser) {
-      res.status(200).json({
-        status: "success",
-        data: updatedUser,
-        message: "User updated successfully."
-      });
-    } else {
-      res.status(404).json({
-        status: "error",
-        message: "User not found."
-      });
+    if (userData.password) {
+      userData.password = bcrypt.hashSync(userData.password, 10);
     }
+
+    const updatedUser = await User.updateUser(id_user, userData);
+    res.status(200).json({
+      status: "success",
+      data: updatedUser,
+      message: "User updated successfully."
+    });
+
   } catch (error) {
     console.error("Error updating user:", error);
     res.status(500).json({
